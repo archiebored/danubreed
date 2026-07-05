@@ -20,7 +20,7 @@ export default function Nav() {
   return (
     <>
       <nav className="fixed top-3.5 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-28px)] max-w-[400px] sm:max-w-[640px] lg:max-w-[820px] flex items-center justify-between gap-2 rounded-full border border-black/10 dark:border-white/10 bg-base-light/85 dark:bg-[#0e0e0e]/85 backdrop-blur-xl px-4 sm:px-5 py-2 shadow-lg shadow-black/10 dark:shadow-black/30">
-        <Link to="/" className="font-display text-lg tracking-wide text-accent flex-shrink-0">Da Nu Breed</Link>
+        <Link to="/" className="font-display text-lg tracking-wide text-accent flex-shrink-0">Da Nu Breedz</Link>
 
         <div className="hidden sm:flex items-center gap-1">
           {links.map((l) => (
