@@ -10,6 +10,7 @@ import More from './pages/More';
 import Contact from './pages/Contact';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import DanielsCamp from './pages/DanielsCamp';
 import StaffLogin from './pages/StaffLogin';
 import Dashboard from './pages/Dashboard';
 import StaffMembers from './pages/StaffMembers';
@@ -18,6 +19,7 @@ import StaffConfessions from './pages/StaffConfessions';
 import StaffRoles from './pages/StaffRoles';
 import StaffServiceTimes from './pages/StaffServiceTimes';
 import StaffCoordinators from './pages/StaffCoordinators';
+import StaffCamp from './pages/StaffCamp';
 
 export default function App() {
   return (
@@ -31,17 +33,12 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/camp" element={<DanielsCamp />} />
       </Route>
 
       <Route path="/staff/login" element={<StaffLogin />} />
 
-      <Route
-        element={
-          <RequireStaff>
-            <AdminLayout />
-          </RequireStaff>
-        }
-      >
+      <Route element={<RequireStaff><AdminLayout /></RequireStaff>}>
         <Route path="/staff/dashboard" element={<Dashboard />} />
         <Route path="/staff/members" element={<StaffMembers />} />
         <Route path="/staff/events" element={<StaffEvents />} />
@@ -49,6 +46,7 @@ export default function App() {
         <Route path="/staff/roles" element={<StaffRoles />} />
         <Route path="/staff/service-times" element={<StaffServiceTimes />} />
         <Route path="/staff/coordinators" element={<StaffCoordinators />} />
+        <Route path="/staff/camp" element={<StaffCamp />} />
       </Route>
     </Routes>
   );
