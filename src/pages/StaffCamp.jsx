@@ -84,6 +84,13 @@ export default function StaffCamp() {
                 Receipt
               </a>
             )}
+            {r.team_color && (
+  <span className="text-[11px] font-bold px-2.5 py-1 rounded-full text-white"
+    style={{ backgroundColor: r.team_color === 'yellow' ? '#EAB308' : r.team_color === 'blue' ? '#3B82F6' : r.team_color === 'red' ? '#EF4444' : '#22C55E' }}
+  >
+    {r.team_color}
+  </span>
+)}
           </div>
         ))}
         {!loading && filtered.length === 0 && <p className="text-sm text-muted-dark">No registrations yet.</p>}

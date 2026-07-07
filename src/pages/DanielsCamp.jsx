@@ -40,6 +40,7 @@ export default function DanielsCamp() {
   const [lookupStatus, setLookupStatus] = useState('idle');
   const [completing, setCompleting] = useState(false);
   const [completeReceipt, setCompleteReceipt] = useState(null);
+  const [teamColor, setTeamColor] = useState(null);
 
   useEffect(() => {
     supabase.from('departments').select('id, name').order('name').then(({ data }) => setDepartments(data || []));
@@ -50,20 +51,22 @@ export default function DanielsCamp() {
     if (!form.full_name || !form.age) return;
     setStatus('saving');
 
-    const { data, error } = await supabase
-      .from('camp_registrations')
-      .insert({
-        full_name: form.full_name.trim(),
-        age: Number(form.age),
-        department_id: form.department_id || null,
-        phone_number: form.phone_number.trim() || null,
-        payment_status: 'unpaid',
-      })
-      .select('id')
-      .single();
+   const { data, error } = await supabase
+  .from('camp_registrations')
+  .insert({
+    full_name: form.full_name.trim(),
+    age: Number(form.age),
+    department_id: form.department_id || null,
+    phone_number: form.phone_number.trim() || null,
+    payment_status: 'unpaid',
+    team_color: ['yellow', 'blue', 'red', 'green'][Math.floor(Math.random() * 4)],
+  })
+  .select('id, team_color')
+  .single();
 
     if (error || !data) { setStatus('error'); return; }
     setRegistrationId(data.id);
+setTeamColor(data.team_color);
     setStatus('idle');
     setStep('payment');
   }
@@ -209,6 +212,13 @@ export default function DanielsCamp() {
                   <p className="text-xs text-accent font-medium">Use the "Complete payment" tab and search by your name or phone number.</p>
                 </>
               )}
+              {teamColor && (
+  <div className={`mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold text-white`}
+    style={{ backgroundColor: teamColor === 'yellow' ? '#EAB308' : teamColor === 'blue' ? '#3B82F6' : teamColor === 'red' ? '#EF4444' : '#22C55E' }}
+  >
+    You're on the <span className="uppercase">{teamColor}</span> team
+  </div>
+)}
             </div>
           )}
         </>
