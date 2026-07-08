@@ -20,6 +20,7 @@ import StaffRoles from './pages/StaffRoles';
 import StaffServiceTimes from './pages/StaffServiceTimes';
 import StaffCoordinators from './pages/StaffCoordinators';
 import StaffCamp from './pages/StaffCamp';
+import StaffCampCheckIn from './pages/StaffCampCheckIn';
 
 export default function App() {
   return (
@@ -38,7 +39,13 @@ export default function App() {
 
       <Route path="/staff/login" element={<StaffLogin />} />
 
-      <Route element={<RequireStaff><AdminLayout /></RequireStaff>}>
+      <Route
+        element={
+          <RequireStaff>
+            <AdminLayout />
+          </RequireStaff>
+        }
+      >
         <Route path="/staff/dashboard" element={<Dashboard />} />
         <Route path="/staff/members" element={<StaffMembers />} />
         <Route path="/staff/events" element={<StaffEvents />} />
@@ -47,6 +54,7 @@ export default function App() {
         <Route path="/staff/service-times" element={<StaffServiceTimes />} />
         <Route path="/staff/coordinators" element={<StaffCoordinators />} />
         <Route path="/staff/camp" element={<StaffCamp />} />
+        <Route path="/staff/camp/check-in" element={<StaffCampCheckIn />} />
       </Route>
     </Routes>
   );

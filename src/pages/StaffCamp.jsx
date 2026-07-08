@@ -22,12 +22,20 @@ export default function StaffCamp() {
 
   useEffect(() => { load(); }, [filter]);
 
+  async function removeRegistration(id, name) {
+    if (!confirm(`Delete ${name}'s camp registration? This can't be undone.`)) return;
+    await supabase.from('camp_registrations').delete().eq('id', id);
+    load();
+  }
+
   const filtered = registrations.filter((r) =>
     r.full_name.toLowerCase().includes(search.toLowerCase())
   );
 
   const paidCount = registrations.filter((r) => r.payment_status === 'paid').length;
   const unpaidCount = registrations.filter((r) => r.payment_status === 'unpaid').length;
+
+  const teamColors = { yellow: '#EAB308', blue: '#3B82F6', red: '#EF4444', green: '#22C55E' };
 
   return (
     <div>
@@ -53,14 +61,28 @@ export default function StaffCamp() {
       <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
         <div className="flex gap-1.5">
           {['all', 'paid', 'unpaid'].map((f) => (
-            <button key={f} onClick={() => setFilter(f)} className={`text-xs font-medium px-3.5 py-1.5 rounded-full capitalize border ${filter === f ? 'bg-accent/15 text-accent border-accent/30' : 'bg-surface-dark text-muted-dark border-white/10'}`}>
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`text-xs font-medium px-3.5 py-1.5 rounded-full capitalize border ${
+                filter === f
+                  ? 'bg-accent/15 text-accent border-accent/30'
+                  : 'bg-surface-dark text-muted-dark border-white/10'
+              }`}
+            >
               {f}
             </button>
           ))}
         </div>
         <div className="relative">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-dark" />
-          <input type="text" placeholder="Search by name..." value={search} onChange={(e) => setSearch(e.target.value)} className="rounded-full bg-surface-dark border border-white/10 pl-9 pr-4 py-2 text-sm outline-none w-48" />
+          <input
+            type="text"
+            placeholder="Search by name..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="rounded-full bg-surface-dark border border-white/10 pl-9 pr-4 py-2 text-sm outline-none w-48"
+          />
         </div>
       </div>
 
@@ -72,28 +94,45 @@ export default function StaffCamp() {
             <div className="min-w-[160px]">
               <p className="text-sm font-semibold">{r.full_name}</p>
               <p className="text-xs text-muted-dark">
-                Age {r.age}{r.departments?.name ? ` · ${r.departments.name.replace(' Department', '')}` : ''}
+                Age {r.age}
+                {r.departments?.name ? ` · ${r.departments.name.replace(' Department', '')}` : ''}
               </p>
             </div>
-            <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${r.payment_status === 'paid' ? 'text-green-400 bg-green-400/10' : 'text-accent bg-accent/10'}`}>
+
+            <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${
+              r.payment_status === 'paid' ? 'text-green-400 bg-green-400/10' : 'text-accent bg-accent/10'
+            }`}>
               {r.payment_status === 'paid' ? 'Paid ✓' : 'Unpaid'}
             </span>
-            {r.receipt_url && (
-              <a href={r.receipt_url} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-xs text-accent ml-auto">
-                <ExternalLink size={12} />
-                Receipt
-              </a>
-            )}
+
             {r.team_color && (
-  <span className="text-[11px] font-bold px-2.5 py-1 rounded-full text-white"
-    style={{ backgroundColor: r.team_color === 'yellow' ? '#EAB308' : r.team_color === 'blue' ? '#3B82F6' : r.team_color === 'red' ? '#EF4444' : '#22C55E' }}
-  >
-    {r.team_color}
-  </span>
-)}
+              <span
+                className="text-[11px] font-bold px-2.5 py-1 rounded-full text-white capitalize"
+                style={{ backgroundColor: teamColors[r.team_color] || '#888' }}
+              >
+                {r.team_color}
+              </span>
+            )}
+
+            <div className="flex items-center gap-3 ml-auto">
+              {r.receipt_url && (
+                <a href={r.receipt_url} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-xs text-accent">
+                  <ExternalLink size={12} />
+                  Receipt
+                </a>
+              )}
+              <button
+                onClick={() => removeRegistration(r.id, r.full_name)}
+                className="text-xs text-red-400 font-medium"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
-        {!loading && filtered.length === 0 && <p className="text-sm text-muted-dark">No registrations yet.</p>}
+        {!loading && filtered.length === 0 && (
+          <p className="text-sm text-muted-dark">No registrations yet.</p>
+        )}
       </div>
     </div>
   );

@@ -2,16 +2,14 @@ import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 
 export default function Login() {
-  const [code, setCode] = useState('');
+  const [name, setName] = useState('');
   const [profile, setProfile] = useState(null);
   const [status, setStatus] = useState('idle');
 
   async function handleSubmit(e) {
     e.preventDefault();
     setStatus('checking');
-    const cleaned = code.trim().toUpperCase();
-    const formatted = cleaned.startsWith('#') ? cleaned : `#${cleaned}`;
-    const { data, error } = await supabase.rpc('get_member_by_code', { p_code: formatted });
+    const { data, error } = await supabase.rpc('get_member_by_name', { p_full_name: name.trim() });
 
     if (error || !data || data.length === 0) {
       setStatus('error');
@@ -24,22 +22,20 @@ export default function Login() {
 
   return (
     <div className="max-w-lg mx-auto pt-2">
-      <p className="text-[11px] font-bold uppercase tracking-[2px] text-accent mb-3">
-        Already a member?
-      </p>
+      <p className="text-[11px] font-bold uppercase tracking-[2px] text-accent mb-3">Already a member?</p>
       <h1 className="font-display text-5xl tracking-wide mb-3">Log in</h1>
       <p className="text-xs text-muted-light dark:text-muted-dark mb-5">
-        Enter the code you got when you signed up — something like #DNB4F2K.
+        Enter the full name you signed up with.
       </p>
 
       <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
         <input
           type="text"
           required
-          placeholder="#DNB4F2K"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          className="flex-1 rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none uppercase"
+          placeholder="Full name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="flex-1 rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none"
         />
         <button
           type="submit"
@@ -51,7 +47,7 @@ export default function Login() {
       </form>
 
       {status === 'error' && (
-        <p className="text-sm text-red-500 mb-4">No member found with that code — double check it.</p>
+        <p className="text-sm text-red-500 mb-4">No member found with that name — double check the spelling.</p>
       )}
 
       {profile && (
