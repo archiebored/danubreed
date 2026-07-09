@@ -90,6 +90,13 @@ export default function StaffCoordinators() {
           className="rounded-md bg-base-dark border border-white/10 px-3 py-2 text-sm outline-none"
         />
         <input
+  type="text"
+  placeholder="Photo URL (optional — paste an image link)"
+  value={form.photo_url || ''}
+  onChange={(e) => setForm((f) => ({ ...f, photo_url: e.target.value }))}
+  className="rounded-md bg-base-dark border border-white/10 px-3 py-2 text-sm outline-none"
+/>
+        <input
           type="tel"
           placeholder="Phone number"
           value={form.phone}
