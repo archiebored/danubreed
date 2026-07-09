@@ -341,7 +341,7 @@ export default function Home() {
         style={
           isCampSlide
             ? {
-                backgroundImage: "linear-gradient(135deg, rgba(10,5,0,0.55), rgba(10,5,0,0.88)), url('/mount-up-banner.jpg')",
+                backgroundImage: "linear-gradient(135deg, rgba(10,5,0,0.55), rgba(10,5,0,0.88)), url('/mount-up-banner.jpeg')",
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }
