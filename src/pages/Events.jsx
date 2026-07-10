@@ -51,7 +51,7 @@ export default function Events() {
         {events.map((ev) => (
           <div
             key={ev.id}
-            className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-surface-light dark:bg-surface-dark p-5"
+            className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-surface-light dark:bg-surface-dark p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-accent/10 hover:border-accent/30"
           >
             <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-accent rounded-r" />
             <div className="flex justify-between items-start flex-wrap gap-2 mb-1.5">
@@ -79,31 +79,31 @@ export default function Events() {
                   setOpenEventId(ev.id);
                   setStatus('idle');
                 }}
-                className="text-xs font-bold text-accent"
+                className="text-xs font-bold text-accent transition-transform duration-200 hover:translate-x-1 inline-block"
               >
                 Register →
               </button>
             ) : (
-              <form onSubmit={(e) => handleRegister(e, ev.id)} className="mt-2 flex flex-col gap-2 max-w-sm">
+              <form onSubmit={(e) => handleRegister(e, ev.id)} className="mt-2 flex flex-col gap-2 max-w-sm animate-[fadeIn_0.25s_ease]">
                 <input
                   type="text"
                   required
                   placeholder="Full name"
                   value={form.full_name}
                   onChange={(e) => setForm((f) => ({ ...f, full_name: e.target.value }))}
-                  className="rounded-md bg-base-light dark:bg-base-dark border border-black/10 dark:border-white/10 px-3 py-2 text-sm outline-none"
+                  className="rounded-md bg-base-light dark:bg-base-dark border border-black/10 dark:border-white/10 px-3 py-2 text-sm outline-none transition-colors duration-200 focus:border-accent/50 focus:ring-2 focus:ring-accent/20"
                 />
                 <input
                   type="tel"
                   placeholder="Phone number (optional)"
                   value={form.phone_number}
                   onChange={(e) => setForm((f) => ({ ...f, phone_number: e.target.value }))}
-                  className="rounded-md bg-base-light dark:bg-base-dark border border-black/10 dark:border-white/10 px-3 py-2 text-sm outline-none"
+                  className="rounded-md bg-base-light dark:bg-base-dark border border-black/10 dark:border-white/10 px-3 py-2 text-sm outline-none transition-colors duration-200 focus:border-accent/50 focus:ring-2 focus:ring-accent/20"
                 />
                 <button
                   type="submit"
                   disabled={status === 'sending'}
-                  className="bg-accent text-[#1a0a00] rounded-md py-2 text-sm font-bold disabled:opacity-60"
+                  className="bg-accent text-[#1a0a00] rounded-md py-2 text-sm font-bold disabled:opacity-60 transition-all duration-200 hover:scale-[1.02] active:scale-95"
                 >
                   {status === 'sending' ? 'Registering...' : 'Confirm registration'}
                 </button>

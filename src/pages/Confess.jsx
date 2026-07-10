@@ -43,10 +43,10 @@ export default function Confess() {
           <button
             key={option}
             onClick={() => setType(option)}
-            className={`flex-1 text-center py-2.5 rounded-lg text-sm font-semibold capitalize border ${
+            className={`flex-1 text-center py-2.5 rounded-lg text-sm font-semibold capitalize border transition-all duration-200 active:scale-95 ${
               type === option
                 ? 'bg-accent/15 text-accent border-accent/30'
-                : 'bg-surface-light dark:bg-surface-dark text-muted-light dark:text-muted-dark border-black/10 dark:border-white/10'
+                : 'bg-surface-light dark:bg-surface-dark text-muted-light dark:text-muted-dark border-black/10 dark:border-white/10 hover:border-accent/30'
             }`}
           >
             {option}
@@ -60,7 +60,7 @@ export default function Confess() {
           onChange={(e) => setContent(e.target.value)}
           placeholder="Write what's on your mind..."
           rows={5}
-          className="w-full rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 p-3.5 text-sm outline-none mb-3 resize-none"
+          className="w-full rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 p-3.5 text-sm outline-none mb-3 resize-none transition-colors duration-200 focus:border-accent/50 focus:ring-2 focus:ring-accent/20"
         />
 
         <input
@@ -68,7 +68,7 @@ export default function Confess() {
           value={contactInfo}
           onChange={(e) => setContactInfo(e.target.value)}
           placeholder="Your name or number (optional)"
-          className="w-full rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-3.5 py-3 text-sm outline-none mb-1.5"
+          className="w-full rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-3.5 py-3 text-sm outline-none mb-1.5 transition-colors duration-200 focus:border-accent/50 focus:ring-2 focus:ring-accent/20"
         />
         <p className="text-[11px] text-muted-light dark:text-muted-dark mb-4">
           Only fill this in if you want a coordinator to reach out to you. Leave blank to stay fully anonymous.
@@ -77,14 +77,14 @@ export default function Confess() {
         <button
           type="submit"
           disabled={status === 'sending' || !content.trim()}
-          className="w-full bg-accent text-[#1a0a00] rounded-xl py-3 text-sm font-bold disabled:opacity-60"
+          className="w-full bg-accent text-[#1a0a00] rounded-xl py-3 text-sm font-bold disabled:opacity-60 transition-all duration-200 hover:scale-[1.02] active:scale-95"
         >
           {status === 'sending' ? 'Sending...' : 'Submit anonymously'}
         </button>
       </form>
 
       {status === 'sent' && (
-        <p className="text-[11px] text-center text-accent font-medium mt-3">
+        <p className="text-[11px] text-center text-accent font-medium mt-3 animate-[fadeIn_0.3s_ease]">
           Sent. Thank you for sharing.
         </p>
       )}

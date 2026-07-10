@@ -8,6 +8,9 @@ const SCHOOL_LEVELS = [
   { value: 'finished_university', label: 'Finished University' },
 ];
 
+const inputClass =
+  'rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none transition-colors duration-200 focus:border-accent/50 focus:ring-2 focus:ring-accent/20';
+
 export default function Signup() {
   const [departments, setDepartments] = useState([]);
   const [tribes, setTribes] = useState([]);
@@ -59,7 +62,7 @@ export default function Signup() {
 
   if (status === 'sent') {
     return (
-      <div className="max-w-lg mx-auto pt-2 text-center">
+      <div className="max-w-lg mx-auto pt-2 text-center animate-[fadeIn_0.3s_ease]">
         <div className="rounded-2xl border border-accent/30 bg-surface-light dark:bg-surface-dark p-8">
           <p className="font-display text-3xl tracking-wide mb-2">You're signed up!</p>
           <p className="text-sm text-muted-light dark:text-muted-dark">
@@ -79,29 +82,28 @@ export default function Signup() {
       <h1 className="font-display text-5xl tracking-wide mb-7">Sign up</h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        {/* Personal Info */}
         <section className="flex flex-col gap-2.5">
           <p className="text-xs font-bold uppercase tracking-wide text-accent">Personal info</p>
           <input
             type="text" required placeholder="Full name" value={form.full_name}
             onChange={(e) => setForm((f) => ({ ...f, full_name: e.target.value }))}
-            className="rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none"
+            className={inputClass}
           />
           <label className="text-xs text-muted-light dark:text-muted-dark -mb-1.5 ml-1">Date of birth</label>
           <input
             type="date" required value={form.date_of_birth}
             onChange={(e) => setForm((f) => ({ ...f, date_of_birth: e.target.value }))}
-            className="rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none"
+            className={inputClass}
           />
           <input
             type="tel" placeholder="WhatsApp number" value={form.phone_number}
             onChange={(e) => setForm((f) => ({ ...f, phone_number: e.target.value }))}
-            className="rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none"
+            className={inputClass}
           />
           <select
             value={form.school_level}
             onChange={(e) => setForm((f) => ({ ...f, school_level: e.target.value }))}
-            className="rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none"
+            className={inputClass}
           >
             <option value="">School level</option>
             {SCHOOL_LEVELS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
@@ -109,16 +111,15 @@ export default function Signup() {
           <input
             type="text" required placeholder="Parent / guardian name" value={form.parent_guardian_name}
             onChange={(e) => setForm((f) => ({ ...f, parent_guardian_name: e.target.value }))}
-            className="rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none"
+            className={inputClass}
           />
           <input
             type="tel" required placeholder="Parent / guardian contact" value={form.parent_guardian_contact}
             onChange={(e) => setForm((f) => ({ ...f, parent_guardian_contact: e.target.value }))}
-            className="rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none"
+            className={inputClass}
           />
         </section>
 
-        {/* Tribe & Service */}
         <section className="flex flex-col gap-2.5">
           <p className="text-xs font-bold uppercase tracking-wide text-accent">Tribe &amp; service</p>
 
@@ -127,10 +128,10 @@ export default function Signup() {
             {[['yes', true], ['no', false]].map(([label, val]) => (
               <button
                 key={label} type="button" onClick={() => setKnowsTribe(val)}
-                className={`flex-1 py-2.5 rounded-xl text-sm font-semibold capitalize border ${
+                className={`flex-1 py-2.5 rounded-xl text-sm font-semibold capitalize border transition-all duration-200 active:scale-95 ${
                   knowsTribe === val
                     ? 'bg-accent/15 text-accent border-accent/30'
-                    : 'bg-surface-light dark:bg-surface-dark text-muted-light dark:text-muted-dark border-black/10 dark:border-white/10'
+                    : 'bg-surface-light dark:bg-surface-dark text-muted-light dark:text-muted-dark border-black/10 dark:border-white/10 hover:border-accent/30'
                 }`}
               >
                 {label}
@@ -140,7 +141,7 @@ export default function Signup() {
           {knowsTribe && (
             <select
               value={tribeId} onChange={(e) => setTribeId(e.target.value)}
-              className="rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none"
+              className={`${inputClass} animate-[fadeIn_0.2s_ease]`}
             >
               <option value="">Select your tribe</option>
               {tribes.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
@@ -157,10 +158,10 @@ export default function Signup() {
             {departments.map((d) => (
               <button
                 key={d.id} type="button" onClick={() => toggleDepartment(d.id)}
-                className={`text-xs font-medium px-3.5 py-2 rounded-full border ${
+                className={`text-xs font-medium px-3.5 py-2 rounded-full border transition-all duration-200 active:scale-95 ${
                   selectedDepartments.includes(d.id)
                     ? 'bg-accent/15 text-accent border-accent/30'
-                    : 'bg-surface-light dark:bg-surface-dark text-muted-light dark:text-muted-dark border-black/10 dark:border-white/10'
+                    : 'bg-surface-light dark:bg-surface-dark text-muted-light dark:text-muted-dark border-black/10 dark:border-white/10 hover:border-accent/30'
                 }`}
               >
                 {d.name.replace(' Department', '')}
@@ -169,10 +170,9 @@ export default function Signup() {
           </div>
         </section>
 
-        {/* Membership */}
         <section className="flex flex-col gap-2.5">
           <p className="text-xs font-bold uppercase tracking-wide text-accent">Membership</p>
-          <label className="flex items-center gap-3 rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 cursor-pointer">
+          <label className="flex items-center gap-3 rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 cursor-pointer transition-colors duration-200 hover:border-accent/30">
             <input
               type="checkbox"
               checked={form.completed_membership_class}
@@ -185,7 +185,7 @@ export default function Signup() {
 
         <button
           type="submit" disabled={status === 'sending'}
-          className="bg-accent text-[#1a0a00] rounded-xl py-3.5 text-sm font-bold disabled:opacity-60"
+          className="bg-accent text-[#1a0a00] rounded-xl py-3.5 text-sm font-bold disabled:opacity-60 transition-all duration-200 hover:scale-[1.02] active:scale-95"
         >
           {status === 'sending' ? 'Signing up...' : 'Sign up'}
         </button>

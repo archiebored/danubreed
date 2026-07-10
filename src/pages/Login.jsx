@@ -35,12 +35,12 @@ export default function Login() {
           placeholder="Full name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="flex-1 rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none"
+          className="flex-1 rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none transition-colors duration-200 focus:border-accent/50 focus:ring-2 focus:ring-accent/20"
         />
         <button
           type="submit"
           disabled={status === 'checking'}
-          className="bg-accent text-[#1a0a00] rounded-xl px-6 text-sm font-bold disabled:opacity-60"
+          className="bg-accent text-[#1a0a00] rounded-xl px-6 text-sm font-bold disabled:opacity-60 transition-all duration-200 hover:scale-[1.03] active:scale-95"
         >
           {status === 'checking' ? '...' : 'Go'}
         </button>
@@ -51,7 +51,7 @@ export default function Login() {
       )}
 
       {profile && (
-        <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-surface-light dark:bg-surface-dark p-6">
+        <div className="relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-surface-light dark:bg-surface-dark p-6 animate-[fadeIn_0.3s_ease] transition-all duration-300 hover:shadow-lg hover:shadow-accent/10">
           <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-accent rounded-r" />
           <p className="font-display text-3xl tracking-wide mb-4">{profile.full_name}</p>
           <div className="grid grid-cols-2 gap-4 text-sm">
