@@ -9,7 +9,6 @@ import Confess from './pages/Confess';
 import More from './pages/More';
 import Contact from './pages/Contact';
 import Signup from './pages/Signup';
-import Login from './pages/Login';
 import DanielsCamp from './pages/DanielsCamp';
 import StaffLogin from './pages/StaffLogin';
 import Dashboard from './pages/Dashboard';
@@ -33,7 +32,6 @@ export default function App() {
         <Route path="/more" element={<More />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/camp" element={<DanielsCamp />} />
       </Route>
 

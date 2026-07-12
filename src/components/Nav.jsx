@@ -9,7 +9,6 @@ const links = [
   { to: '/give', label: 'Give' },
   { to: '/confess', label: 'Confess' },
   { to: '/signup', label: 'Sign up' },
-  { to: '/login', label: 'Log in' },
   { to: '/contact', label: 'Coordinators' },
 ];
 
@@ -59,7 +58,7 @@ export default function Nav() {
       </nav>
 
       {open && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-base-light dark:bg-base-dark flex flex-col gap-2 px-6 py-[90px] animate-[fadeIn_0.2s_ease]">
+        <div className="lg:hidden fixed inset-0 z-50 bg-base-light dark:bg-base-dark flex flex-col gap-2 px-6 py-[90px]">
           <button
             onClick={() => setOpen(false)}
             aria-label="Close menu"
@@ -67,12 +66,11 @@ export default function Nav() {
           >
             <X size={18} />
           </button>
-          {links.map((l, i) => (
+          {links.map((l) => (
             <NavLink
               key={l.to}
               to={l.to}
               onClick={() => setOpen(false)}
-              style={{ animationDelay: `${i * 40}ms` }}
               className={({ isActive }) =>
                 `px-5 py-4 rounded-2xl text-base font-semibold border transition-all duration-200 active:scale-95 ${
                   isActive
