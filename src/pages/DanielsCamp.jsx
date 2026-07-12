@@ -187,27 +187,32 @@ export default function DanielsCamp() {
           {step === 'form' && (
             <form onSubmit={handleRegister} className="flex flex-col gap-5">
               <section className="flex flex-col gap-2.5">
-                <p className="text-xs font-bold uppercase tracking-wide text-accent">Parent / guardian</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-accent">Contact info</p>
+                <p className="text-xs text-muted-light dark:text-muted-dark -mt-1">
+                  Registering just yourself? Put your own name and number below — this is only used to look up your registration later.
+                </p>
                 <input
-                  type="text" placeholder="Your name" value={parentName}
+                  type="text" placeholder="Your name (or a parent's, if they're helping you register)" value={parentName}
                   onChange={(e) => setParentName(e.target.value)}
                   className="rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none transition-colors duration-200 focus:border-accent/50 focus:ring-2 focus:ring-accent/20"
                 />
                 <input
-                  type="tel" required placeholder="Your phone number (used to look up later)" value={parentPhone}
+                  type="tel" required placeholder="Phone number (yours, or theirs)" value={parentPhone}
                   onChange={(e) => setParentPhone(e.target.value)}
                   className="rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none transition-colors duration-200 focus:border-accent/50 focus:ring-2 focus:ring-accent/20"
                 />
               </section>
 
               <section className="flex flex-col gap-3">
-                <p className="text-xs font-bold uppercase tracking-wide text-accent">Children attending</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-accent">Who's attending</p>
                 {children.map((child, i) => (
                   <div key={i} className="rounded-xl border border-black/10 dark:border-white/10 bg-surface-light dark:bg-surface-dark p-4 flex flex-col gap-2.5">
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-semibold text-muted-light dark:text-muted-dark">Child {i + 1}</p>
+                      <p className="text-xs font-semibold text-muted-light dark:text-muted-dark">
+                        {children.length > 1 ? `Person ${i + 1}` : 'Attendee'}
+                      </p>
                       {children.length > 1 && (
-                        <button type="button" onClick={() => removeChild(i)} className="text-red-400" aria-label="Remove child">
+                        <button type="button" onClick={() => removeChild(i)} className="text-red-400" aria-label="Remove">
                           <Trash2 size={14} />
                         </button>
                       )}
@@ -239,7 +244,7 @@ export default function DanielsCamp() {
                   className="flex items-center justify-center gap-1.5 text-sm font-semibold text-accent border border-dashed border-accent/30 rounded-xl py-2.5 transition-colors duration-200 hover:bg-accent/5"
                 >
                   <Plus size={15} />
-                  Add another child
+                  Add another person
                 </button>
               </section>
 
@@ -255,7 +260,7 @@ export default function DanielsCamp() {
 
           {step === 'payment' && (
             <div className="flex flex-col gap-3">
-              <p className="text-sm font-medium mb-1">Have you paid the camp fee for {registeredChildren.length > 1 ? 'these children' : 'this child'}?</p>
+              <p className="text-sm font-medium mb-1">Have you paid the camp fee for {registeredChildren.length > 1 ? 'everyone above' : 'this registration'}?</p>
               <button onClick={() => handlePaymentChoice('paid')} className={`rounded-xl border p-4 text-left transition-colors ${paymentChoice === 'paid' ? 'border-accent/30 bg-accent/10' : 'border-black/10 dark:border-white/10 bg-surface-light dark:bg-surface-dark'}`}>
                 <p className="text-sm font-semibold">I've paid ✓</p>
                 <p className="text-xs text-muted-light dark:text-muted-dark mt-0.5">One receipt covers everyone registered above</p>
