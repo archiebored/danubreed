@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Search, ExternalLink } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
+const teamColors = { yellow: '#EAB308', blue: '#3B82F6', red: '#EF4444', green: '#22C55E' };
+
 export default function StaffCamp() {
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,13 +31,12 @@ export default function StaffCamp() {
   }
 
   const filtered = registrations.filter((r) =>
-    r.full_name.toLowerCase().includes(search.toLowerCase())
+    r.full_name.toLowerCase().includes(search.toLowerCase()) ||
+    (r.parent_name || '').toLowerCase().includes(search.toLowerCase())
   );
 
   const paidCount = registrations.filter((r) => r.payment_status === 'paid').length;
   const unpaidCount = registrations.filter((r) => r.payment_status === 'unpaid').length;
-
-  const teamColors = { yellow: '#EAB308', blue: '#3B82F6', red: '#EF4444', green: '#22C55E' };
 
   return (
     <div>
@@ -78,10 +79,10 @@ export default function StaffCamp() {
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-dark" />
           <input
             type="text"
-            placeholder="Search by name..."
+            placeholder="Search child or parent..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="rounded-full bg-surface-dark border border-white/10 pl-9 pr-4 py-2 text-sm outline-none w-48"
+            className="rounded-full bg-surface-dark border border-white/10 pl-9 pr-4 py-2 text-sm outline-none w-56"
           />
         </div>
       </div>
@@ -91,7 +92,12 @@ export default function StaffCamp() {
       <div className="flex flex-col gap-2 max-w-2xl">
         {filtered.map((r) => (
           <div key={r.id} className="rounded-xl border border-white/10 bg-surface-dark p-4 flex flex-wrap items-center gap-3">
-            <div className="min-w-[160px]">
+            <div className="min-w-[180px]">
+              {r.parent_name && (
+                <p className="text-[10px] text-muted-dark uppercase tracking-wide mb-0.5">
+                  Parent: {r.parent_name}{r.parent_phone ? ` · ${r.parent_phone}` : ''}
+                </p>
+              )}
               <p className="text-sm font-semibold">{r.full_name}</p>
               <p className="text-xs text-muted-dark">
                 Age {r.age}
