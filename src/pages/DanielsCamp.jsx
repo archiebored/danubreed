@@ -148,6 +148,9 @@ export default function DanielsCamp() {
     setCompleting(false);
   }
 
+  const isGroup = familyResult && familyResult.length > 1;
+  const isRegisteredGroup = registeredChildren.length > 1;
+
   return (
     <div className="max-w-2xl mx-auto pt-2">
       <div
@@ -260,14 +263,18 @@ export default function DanielsCamp() {
 
           {step === 'payment' && (
             <div className="flex flex-col gap-3">
-              <p className="text-sm font-medium mb-1">Have you paid the camp fee for {registeredChildren.length > 1 ? 'everyone above' : 'this registration'}?</p>
+              <p className="text-sm font-medium mb-1">Have you paid the camp fee for {isRegisteredGroup ? 'everyone above' : 'this registration'}?</p>
               <button onClick={() => handlePaymentChoice('paid')} className={`rounded-xl border p-4 text-left transition-colors ${paymentChoice === 'paid' ? 'border-accent/30 bg-accent/10' : 'border-black/10 dark:border-white/10 bg-surface-light dark:bg-surface-dark'}`}>
                 <p className="text-sm font-semibold">I've paid ✓</p>
-                <p className="text-xs text-muted-light dark:text-muted-dark mt-0.5">One receipt covers everyone registered above</p>
+                <p className="text-xs text-muted-light dark:text-muted-dark mt-0.5">
+                  {isRegisteredGroup ? 'One receipt covers everyone registered above' : 'Upload your receipt to confirm your spot'}
+                </p>
               </button>
               <button onClick={() => handlePaymentChoice('unpaid')} className={`rounded-xl border p-4 text-left transition-colors ${paymentChoice === 'unpaid' ? 'border-accent/30 bg-accent/10' : 'border-black/10 dark:border-white/10 bg-surface-light dark:bg-surface-dark'}`}>
                 <p className="text-sm font-semibold">I haven't paid yet</p>
-                <p className="text-xs text-muted-light dark:text-muted-dark mt-0.5">Save these spots now, come back once you've paid</p>
+                <p className="text-xs text-muted-light dark:text-muted-dark mt-0.5">
+                  {isRegisteredGroup ? "Save these spots now, come back once you've paid" : "Save your spot now, come back once you've paid"}
+                </p>
               </button>
               {paymentChoice === 'paid' && (
                 <div className="mt-2 flex flex-col gap-3">
@@ -293,7 +300,9 @@ export default function DanielsCamp() {
                 <p className="font-display text-2xl tracking-wide mb-3">You're registered!</p>
               ) : (
                 <>
-                  <p className="font-display text-2xl tracking-wide mb-3">Spots saved!</p>
+                  <p className="font-display text-2xl tracking-wide mb-3">
+                    {isRegisteredGroup ? 'Spots saved!' : 'Spot saved!'}
+                  </p>
                   <p className="text-sm text-muted-light dark:text-muted-dark mb-2">Come back once you've paid — use "Complete payment" and your phone number.</p>
                 </>
               )}
@@ -313,11 +322,11 @@ export default function DanielsCamp() {
       {tab === 'lookup' && (
         <div>
           <p className="text-sm text-muted-light dark:text-muted-dark mb-4">
-            Find your family's registration using the phone number you registered with.
+            Find your registration using the phone number you registered with.
           </p>
           <form onSubmit={handleLookup} className="flex flex-col gap-2.5 mb-5">
             <input
-              type="tel" required placeholder="Parent phone number" value={lookupPhone}
+              type="tel" required placeholder="Phone number" value={lookupPhone}
               onChange={(e) => setLookupPhone(e.target.value)}
               className="rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-4 py-3 text-sm outline-none"
             />
@@ -326,7 +335,7 @@ export default function DanielsCamp() {
               className="bg-accent text-[#1a0a00] rounded-xl py-3 text-sm font-bold disabled:opacity-60 flex items-center justify-center gap-2"
             >
               <Search size={15} />
-              {lookupStatus === 'checking' ? 'Searching...' : 'Find my family'}
+              {lookupStatus === 'checking' ? 'Searching...' : 'Find registration'}
             </button>
           </form>
 
@@ -334,7 +343,9 @@ export default function DanielsCamp() {
 
           {familyResult && (
             <div className="rounded-2xl border border-black/10 dark:border-white/10 bg-surface-light dark:bg-surface-dark p-5">
-              <p className="font-display text-xl tracking-wide mb-4">{familyResult[0]?.parent_name || 'Your family'}</p>
+              <p className="font-display text-xl tracking-wide mb-4">
+                {isGroup ? (familyResult[0]?.parent_name || 'Your group') : 'Your registration'}
+              </p>
               <div className="flex flex-col gap-2.5 mb-4">
                 {familyResult.map((c) => (
                   <div key={c.id} className="flex items-center justify-between rounded-lg bg-base-light dark:bg-base-dark px-3 py-2.5">
@@ -354,7 +365,9 @@ export default function DanielsCamp() {
 
               {familyResult.some((c) => c.payment_status === 'unpaid') ? (
                 <div className="flex flex-col gap-3 border-t border-black/10 dark:border-white/10 pt-4">
-                  <p className="text-xs font-medium">Upload one receipt to confirm everyone above:</p>
+                  <p className="text-xs font-medium">
+                    {isGroup ? 'Upload one receipt to confirm everyone above:' : 'Upload your receipt to confirm your spot:'}
+                  </p>
                   <label className="rounded-xl border-2 border-dashed border-accent/30 bg-accent/5 p-4 text-center cursor-pointer flex flex-col items-center gap-2">
                     <Upload size={18} className="text-accent" />
                     <p className="text-xs font-medium">{completeReceipt ? completeReceipt.name : 'Tap to upload receipt'}</p>
@@ -366,7 +379,7 @@ export default function DanielsCamp() {
                 </div>
               ) : (
                 <p className="text-sm text-green-500 font-medium border-t border-black/10 dark:border-white/10 pt-4">
-                  Everyone's all set — see you at Daniel's Camp! 🏕️
+                  {isGroup ? "Everyone's all set" : "You're all set"} — see you at Daniel's Camp! 🏕️
                 </p>
               )}
             </div>
