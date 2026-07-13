@@ -1,7 +1,25 @@
 import { Outlet } from 'react-router-dom';
 import Nav from './Nav';
+import AppTopBar from './AppTopBar';
+import BottomTabBar from './BottomTabBar';
+import InstallBanner from './InstallBanner';
+import { useStandalone } from '../hooks/useStandalone';
 
 export default function PublicLayout() {
+  const isStandalone = useStandalone();
+
+  if (isStandalone) {
+    return (
+      <div className="min-h-screen bg-base-light dark:bg-base-dark text-ink-light dark:text-ink-dark">
+        <AppTopBar />
+        <main className="pt-14 pb-[62px]">
+          <Outlet />
+        </main>
+        <BottomTabBar />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen relative bg-base-light dark:bg-base-dark text-ink-light dark:text-ink-dark">
       <div
@@ -21,6 +39,7 @@ export default function PublicLayout() {
       <main className="relative px-4 sm:px-8 pb-16 pt-[104px]">
         <Outlet />
       </main>
+      <InstallBanner />
     </div>
   );
 }
