@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Search, ExternalLink } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { useConfirm } from '../context/ConfirmContext';
 
 const teamColors = { yellow: '#EAB308', blue: '#3B82F6', red: '#EF4444', green: '#22C55E' };
 
 export default function StaffCamp() {
+  const confirm = useConfirm();
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
@@ -12,10 +14,7 @@ export default function StaffCamp() {
 
   async function load() {
     setLoading(true);
-    let query = supabase
-      .from('camp_registrations')
-      .select('*, departments(name)')
-      .order('created_at', { ascending: false });
+    let query = supabase.from('camp_registrations').select('*, departments(name)').order('created_at', { ascending: false });
     if (filter !== 'all') query = query.eq('payment_status', filter);
     const { data } = await query;
     setRegistrations(data || []);
@@ -25,7 +24,8 @@ export default function StaffCamp() {
   useEffect(() => { load(); }, [filter]);
 
   async function removeRegistration(id, name) {
-    if (!confirm(`Delete ${name}'s camp registration? This can't be undone.`)) return;
+    const ok = await confirm({ title: `Delete ${name}'s camp registration?` });
+    if (!ok) return;
     await supabase.from('camp_registrations').delete().eq('id', id);
     load();
   }
@@ -62,28 +62,14 @@ export default function StaffCamp() {
       <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
         <div className="flex gap-1.5">
           {['all', 'paid', 'unpaid'].map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`text-xs font-medium px-3.5 py-1.5 rounded-full capitalize border ${
-                filter === f
-                  ? 'bg-accent/15 text-accent border-accent/30'
-                  : 'bg-surface-dark text-muted-dark border-white/10'
-              }`}
-            >
+            <button key={f} onClick={() => setFilter(f)} className={`text-xs font-medium px-3.5 py-1.5 rounded-full capitalize border ${filter === f ? 'bg-accent/15 text-accent border-accent/30' : 'bg-surface-dark text-muted-dark border-white/10'}`}>
               {f}
             </button>
           ))}
         </div>
         <div className="relative">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-dark" />
-          <input
-            type="text"
-            placeholder="Search child or parent..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="rounded-full bg-surface-dark border border-white/10 pl-9 pr-4 py-2 text-sm outline-none w-56"
-          />
+          <input type="text" placeholder="Search child or parent..." value={search} onChange={(e) => setSearch(e.target.value)} className="rounded-full bg-surface-dark border border-white/10 pl-9 pr-4 py-2 text-sm outline-none w-56" />
         </div>
       </div>
 
@@ -91,54 +77,28 @@ export default function StaffCamp() {
 
       <div className="flex flex-col gap-2 max-w-2xl">
         {filtered.map((r) => (
-          <div key={r.id} className="rounded-xl border border-white/10 bg-surface-dark p-4 flex flex-wrap items-center gap-3">
+          <div key={r.id} className="rounded-xl border border-white/10 bg-surface-dark p-4 flex flex-wrap items-center gap-3 transition-colors duration-200 hover:border-accent/20">
             <div className="min-w-[180px]">
-              {r.parent_name && (
-                <p className="text-[10px] text-muted-dark uppercase tracking-wide mb-0.5">
-                  Parent: {r.parent_name}{r.parent_phone ? ` · ${r.parent_phone}` : ''}
-                </p>
-              )}
+              {r.parent_name && <p className="text-[10px] text-muted-dark uppercase tracking-wide mb-0.5">Parent: {r.parent_name}{r.parent_phone ? ` · ${r.parent_phone}` : ''}</p>}
               <p className="text-sm font-semibold">{r.full_name}</p>
-              <p className="text-xs text-muted-dark">
-                Age {r.age}
-                {r.departments?.name ? ` · ${r.departments.name.replace(' Department', '')}` : ''}
-              </p>
+              <p className="text-xs text-muted-dark">Age {r.age}{r.departments?.name ? ` · ${r.departments.name.replace(' Department', '')}` : ''}</p>
+              {r.notes && <p className="text-xs text-accent mt-0.5">⚠ {r.notes}</p>}
             </div>
-
-            <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${
-              r.payment_status === 'paid' ? 'text-green-400 bg-green-400/10' : 'text-accent bg-accent/10'
-            }`}>
+            <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${r.payment_status === 'paid' ? 'text-green-400 bg-green-400/10' : 'text-accent bg-accent/10'}`}>
               {r.payment_status === 'paid' ? 'Paid ✓' : 'Unpaid'}
             </span>
-
             {r.team_color && (
-              <span
-                className="text-[11px] font-bold px-2.5 py-1 rounded-full text-white capitalize"
-                style={{ backgroundColor: teamColors[r.team_color] || '#888' }}
-              >
+              <span className="text-[11px] font-bold px-2.5 py-1 rounded-full text-white capitalize" style={{ backgroundColor: teamColors[r.team_color] || '#888' }}>
                 {r.team_color}
               </span>
             )}
-
             <div className="flex items-center gap-3 ml-auto">
-              {r.receipt_url && (
-                <a href={r.receipt_url} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-xs text-accent">
-                  <ExternalLink size={12} />
-                  Receipt
-                </a>
-              )}
-              <button
-                onClick={() => removeRegistration(r.id, r.full_name)}
-                className="text-xs text-red-400 font-medium"
-              >
-                Delete
-              </button>
+              {r.receipt_url && <a href={r.receipt_url} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-xs text-accent"><ExternalLink size={12} />Receipt</a>}
+              <button onClick={() => removeRegistration(r.id, r.full_name)} className="text-xs text-red-400 font-medium">Delete</button>
             </div>
           </div>
         ))}
-        {!loading && filtered.length === 0 && (
-          <p className="text-sm text-muted-dark">No registrations yet.</p>
-        )}
+        {!loading && filtered.length === 0 && <p className="text-sm text-muted-dark">No registrations yet.</p>}
       </div>
     </div>
   );
