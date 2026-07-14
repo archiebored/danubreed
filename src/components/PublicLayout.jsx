@@ -12,7 +12,7 @@ export default function PublicLayout() {
     return (
       <div className="min-h-screen bg-base-light dark:bg-base-dark text-ink-light dark:text-ink-dark">
         <AppTopBar />
-        <main className="pt-14 pb-[62px]">
+        <main className="px-4 pt-16 pb-20">
           <Outlet />
         </main>
         <BottomTabBar />

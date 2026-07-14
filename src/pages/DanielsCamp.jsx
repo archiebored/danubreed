@@ -36,7 +36,7 @@ function TeamBadge({ color }) {
   );
 }
 
-const emptyChild = () => ({ full_name: '', age: '', department_id: '' });
+const emptyChild = () => ({ full_name: '', age: '', department_id: '', notes: '' });
 
 export default function DanielsCamp() {
   const countdown = useCountdown('2026-08-27T00:00:00');
@@ -88,6 +88,7 @@ export default function DanielsCamp() {
       parent_phone: parentPhone.trim(),
       payment_status: 'unpaid',
       team_color: ['yellow', 'blue', 'red', 'green'][Math.floor(Math.random() * 4)],
+      notes: c.notes?.trim() || null,
     }));
 
     const { data, error } = await supabase.from('camp_registrations').insert(rows).select('id, full_name, team_color');
@@ -155,7 +156,7 @@ export default function DanielsCamp() {
     <div className="max-w-2xl mx-auto pt-2">
       <div
         className="relative overflow-hidden rounded-2xl p-7 mb-7 bg-cover bg-center"
-        style={{ backgroundImage: "linear-gradient(135deg, rgba(10,5,0,0.55), rgba(10,5,0,0.88)), url('/mount-up-banner.jpg')" }}
+        style={{ backgroundImage: "linear-gradient(135deg, rgba(10,5,0,0.55), rgba(10,5,0,0.88)), url('/mount-up-banner.jpeg')" }}
       >
         <p className="text-[11px] font-bold uppercase tracking-[2px] text-accent mb-1">Annual camp · August 27–30, 2026</p>
         <h1 className="font-display text-4xl sm:text-5xl tracking-wide text-white mb-1">
@@ -240,6 +241,11 @@ export default function DanielsCamp() {
                         {departments.map((d) => <option key={d.id} value={d.id}>{d.name.replace(' Department', '')}</option>)}
                       </select>
                     </div>
+                    <input
+                      type="text" placeholder="Allergies or special notes (optional)" value={child.notes || ''}
+                      onChange={(e) => updateChild(i, 'notes', e.target.value)}
+                      className="rounded-lg bg-base-light dark:bg-base-dark border border-black/10 dark:border-white/10 px-3 py-2.5 text-sm outline-none"
+                    />
                   </div>
                 ))}
                 <button
