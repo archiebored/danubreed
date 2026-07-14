@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, Calendar, Mail, Clock, Phone, Lock, LogOut, Tent, UserCheck, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Users, Calendar, Mail, Clock, Phone, Lock, LogOut, Tent, UserCheck, Menu, X, Image as ImageIcon } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const navItems = [
@@ -12,6 +12,7 @@ const navItems = [
   { label: 'Confessions', icon: Mail, to: '/staff/confessions' },
   { label: 'Service times', icon: Clock, to: '/staff/service-times' },
   { label: 'Coordinators', icon: Phone, to: '/staff/coordinators' },
+  { label: 'Gallery', icon: ImageIcon, to: '/staff/gallery' },
 ];
 
 export default function AdminLayout() {

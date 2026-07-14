@@ -8,6 +8,7 @@ const links = [
   { to: '/events', label: 'Events' },
   { to: '/give', label: 'Give' },
   { to: '/confess', label: 'Confess' },
+  { to: '/gallery', label: 'Gallery' },
   { to: '/signup', label: 'Sign up' },
   { to: '/contact', label: 'Coordinators' },
 ];
@@ -18,7 +19,7 @@ export default function Nav() {
 
   return (
     <>
-      <nav className="fixed top-3.5 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-28px)] max-w-[400px] lg:max-w-[820px] flex items-center justify-between gap-2 rounded-full border border-black/10 dark:border-white/10 bg-base-light/85 dark:bg-[#0e0e0e]/85 backdrop-blur-xl px-4 lg:px-5 py-2 shadow-lg shadow-black/10 dark:shadow-black/30 transition-shadow duration-300">
+      <nav className="fixed top-3.5 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-28px)] max-w-[400px] lg:max-w-[900px] flex items-center justify-between gap-2 rounded-full border border-black/10 dark:border-white/10 bg-base-light/85 dark:bg-[#0e0e0e]/85 backdrop-blur-xl px-4 lg:px-5 py-2 shadow-lg shadow-black/10 dark:shadow-black/30 transition-shadow duration-300">
         <Link to="/" className="font-display text-lg tracking-wide text-accent flex-shrink-0 transition-transform duration-200 hover:scale-105 inline-block">Da Nu Breed</Link>
 
         <div className="hidden lg:flex items-center gap-1">
@@ -58,7 +59,7 @@ export default function Nav() {
       </nav>
 
       {open && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-base-light dark:bg-base-dark flex flex-col gap-2 px-6 py-[90px]">
+        <div className="lg:hidden fixed inset-0 z-50 bg-base-light dark:bg-base-dark flex flex-col gap-2 px-6 py-[90px] overflow-y-auto">
           <button
             onClick={() => setOpen(false)}
             aria-label="Close menu"

@@ -10,6 +10,7 @@ import More from './pages/More';
 import Contact from './pages/Contact';
 import Signup from './pages/Signup';
 import DanielsCamp from './pages/DanielsCamp';
+import Gallery from './pages/Gallery';
 import StaffLogin from './pages/StaffLogin';
 import Dashboard from './pages/Dashboard';
 import StaffMembers from './pages/StaffMembers';
@@ -20,6 +21,7 @@ import StaffServiceTimes from './pages/StaffServiceTimes';
 import StaffCoordinators from './pages/StaffCoordinators';
 import StaffCamp from './pages/StaffCamp';
 import StaffCampCheckIn from './pages/StaffCampCheckIn';
+import StaffGallery from './pages/StaffGallery';
 
 export default function App() {
   return (
@@ -33,6 +35,7 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/camp" element={<DanielsCamp />} />
+        <Route path="/gallery" element={<Gallery />} />
       </Route>
 
       <Route path="/staff/login" element={<StaffLogin />} />
@@ -53,6 +56,7 @@ export default function App() {
         <Route path="/staff/coordinators" element={<StaffCoordinators />} />
         <Route path="/staff/camp" element={<StaffCamp />} />
         <Route path="/staff/camp/check-in" element={<StaffCampCheckIn />} />
+        <Route path="/staff/gallery" element={<StaffGallery />} />
       </Route>
     </Routes>
   );
