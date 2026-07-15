@@ -87,10 +87,7 @@ function HeroCamp() {
       </div>
       <div className="flex flex-wrap gap-3">
         <Link to="/camp" className="px-6 py-3 rounded-full bg-accent text-[#1a0a00] text-sm font-bold transition-all duration-200 hover:scale-[1.05] hover:shadow-lg hover:shadow-accent/30 active:scale-95">
-          Register now
-        </Link>
-        <Link to="/camp" className="px-6 py-3 rounded-full border border-white/30 text-sm font-bold transition-all duration-200 hover:scale-[1.05] hover:bg-white/10 active:scale-95">
-          Camp details
+          Register for camp
         </Link>
       </div>
     </div>
