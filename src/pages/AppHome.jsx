@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UserPlus, Phone, Tent, ArrowRight, Image as ImageIcon } from 'lucide-react';
+import { UserPlus, Phone, MapPin, Tent, ArrowRight, Image as ImageIcon } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 function useCountdown(targetDate) {
@@ -21,7 +21,7 @@ function useCountdown(targetDate) {
 const quickActions = [
   { to: '/signup', label: 'Sign up', icon: UserPlus },
   { to: '/contact', label: 'Coordinators', icon: Phone },
-  { to: '/camp', label: "Daniel's Camp", icon: Tent },
+  { to: '/visit', label: 'Visit Us', icon: MapPin },
   { to: '/gallery', label: 'Gallery', icon: ImageIcon },
 ];
 

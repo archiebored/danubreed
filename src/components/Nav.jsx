@@ -9,6 +9,7 @@ const links = [
   { to: '/give', label: 'Give' },
   { to: '/confess', label: 'Confess' },
   { to: '/gallery', label: 'Gallery' },
+  { to: '/visit', label: 'Visit Us' },
   { to: '/signup', label: 'Sign up' },
   { to: '/contact', label: 'Coordinators' },
 ];
