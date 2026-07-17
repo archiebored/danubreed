@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UserPlus, Phone, MapPin, Tent, ArrowRight, Image as ImageIcon } from 'lucide-react';
+import { UserPlus, Phone, MapPin, Tent, ArrowRight, Image as ImageIcon, PartyPopper } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { useLocalName } from '../hooks/useLocalName';
 
 function useCountdown(targetDate) {
   const [timeLeft, setTimeLeft] = useState({});
@@ -25,8 +26,18 @@ const quickActions = [
   { to: '/gallery', label: 'Gallery', icon: ImageIcon },
 ];
 
+function isTodayBirthday(dob) {
+  if (!dob) return false;
+  const d = new Date(dob);
+  const today = new Date();
+  return d.getMonth() === today.getMonth() && d.getDate() === today.getDate();
+}
+
 export default function AppHome() {
   const countdown = useCountdown('2026-08-27T00:00:00');
+  const { name, setName } = useLocalName();
+  const [nameInput, setNameInput] = useState('');
+  const [birthday, setBirthday] = useState(false);
   const [serviceTimes, setServiceTimes] = useState([]);
   const [nextEvent, setNextEvent] = useState(null);
   const [photos, setPhotos] = useState([]);
@@ -48,13 +59,64 @@ export default function AppHome() {
       .then(({ data }) => setPhotos(data || []));
   }, []);
 
+  // Birthday check — matches the typed name against the members table
+  useEffect(() => {
+    if (!name) return;
+    supabase
+      .from('members')
+      .select('date_of_birth')
+      .ilike('full_name', name)
+      .limit(1)
+      .then(({ data }) => setBirthday(isTodayBirthday(data?.[0]?.date_of_birth)));
+  }, [name]);
+
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
 
+  function handleSaveName(e) {
+    e.preventDefault();
+    if (!nameInput.trim()) return;
+    setName(nameInput);
+  }
+
   return (
     <div className="px-4 pt-4 pb-4 max-w-lg mx-auto">
+      {birthday && (
+        <div className="flex items-center gap-3 rounded-2xl bg-accent/15 border border-accent/30 px-4 py-3 mb-4 animate-[popIn_0.3s_ease]">
+          <PartyPopper size={20} className="text-accent flex-shrink-0" />
+          <p className="text-sm font-semibold">Happy birthday, {name.split(' ')[0]}! 🎉 The whole Da Nu Breed fam is celebrating you today.</p>
+        </div>
+      )}
+
       <p className="text-xs text-muted-light dark:text-muted-dark mb-1">{greeting}</p>
-      <h1 className="font-display text-3xl tracking-wide mb-5">Welcome back</h1>
+
+      {name ? (
+        <div className="flex items-center justify-between mb-5">
+          <h1 className="font-display text-3xl tracking-wide">Hey, {name.split(' ')[0]}</h1>
+          <button onClick={() => setName('')} className="text-[11px] text-muted-light dark:text-muted-dark underline">
+            Not you?
+          </button>
+        </div>
+      ) : (
+        <div className="mb-5">
+          <h1 className="font-display text-3xl tracking-wide mb-2">Welcome</h1>
+          <form onSubmit={handleSaveName} className="flex gap-2">
+            <input
+              type="text"
+              placeholder="What's your name?"
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
+              className="flex-1 rounded-xl bg-surface-light dark:bg-surface-dark border border-black/10 dark:border-white/10 px-3.5 py-2.5 text-sm outline-none transition-colors duration-200 focus:border-accent/50 focus:ring-2 focus:ring-accent/20"
+            />
+            <button
+              type="submit"
+              className="bg-accent text-[#1a0a00] rounded-xl px-4 text-sm font-bold transition-transform duration-200 active:scale-95"
+            >
+              Save
+            </button>
+          </form>
+        </div>
+      )}
 
       <Link
         to="/camp"
