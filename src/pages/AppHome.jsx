@@ -59,7 +59,7 @@ export default function AppHome() {
       <Link
         to="/camp"
         className="relative overflow-hidden rounded-2xl p-4 mb-4 flex items-center justify-between bg-cover bg-center transition-transform duration-200 active:scale-[0.98]"
-        style={{ backgroundImage: "linear-gradient(120deg, rgba(10,5,0,0.6), rgba(10,5,0,0.85)), url('/mount-up-banner.jpg')" }}
+        style={{ backgroundImage: "linear-gradient(120deg, rgba(10,5,0,0.6), rgba(10,5,0,0.85)), url('/mount-up-banner.jpeg')" }}
       >
         <div>
           <p className="text-[10px] font-bold uppercase tracking-wide text-accent mb-1">Daniel's Camp · Mount Up</p>
