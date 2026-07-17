@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MapPin, Tent, Phone, Mail, Instagram } from 'lucide-react';
+import { MapPin, Tent, Phone, Mail } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 export default function VisitUs() {
@@ -76,8 +76,7 @@ export default function VisitUs() {
           <div className="flex gap-2">
             {info.instagram_url && (
               <a href={info.instagram_url} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-black/10 dark:border-white/10 bg-surface-light dark:bg-surface-dark py-3 text-sm font-semibold transition-transform duration-200 hover:scale-[1.02] active:scale-95">
-                <Instagram size={16} className="text-accent" />
-                Instagram
+                Insta
               </a>
             )}
             {info.tiktok_url && (
