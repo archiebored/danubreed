@@ -24,6 +24,7 @@ import StaffCamp from './pages/StaffCamp';
 import StaffCampCheckIn from './pages/StaffCampCheckIn';
 import StaffGallery from './pages/StaffGallery';
 import StaffVisitInfo from './pages/StaffVisitInfo';
+import StaffNotifications from './pages/StaffNotifications';
 
 export default function App() {
   return (
@@ -61,6 +62,7 @@ export default function App() {
         <Route path="/staff/camp/check-in" element={<StaffCampCheckIn />} />
         <Route path="/staff/gallery" element={<StaffGallery />} />
         <Route path="/staff/visit-info" element={<StaffVisitInfo />} />
+        <Route path="/staff/notifications" element={<StaffNotifications />} />
       </Route>
     </Routes>
   );

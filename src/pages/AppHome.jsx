@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { UserPlus, Phone, MapPin, Tent, ArrowRight, Image as ImageIcon, PartyPopper } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useLocalName } from '../hooks/useLocalName';
+import NotificationOptIn from '../components/NotificationOptIn';
 
 function useCountdown(targetDate) {
   const [timeLeft, setTimeLeft] = useState({});
@@ -88,17 +89,16 @@ export default function AppHome() {
         </div>
       )}
 
-      <p className="text-xs text-muted-light dark:text-muted-dark mb-1">{greeting}</p>
-
       {name ? (
         <div className="flex items-center justify-between mb-5">
-          <h1 className="font-display text-3xl tracking-wide">Hey, {name.split(' ')[0]}</h1>
+          <h1 className="font-display text-3xl tracking-wide">{greeting}, {name.split(' ')[0]}</h1>
           <button onClick={() => setName('')} className="text-[11px] text-muted-light dark:text-muted-dark underline">
             Not you?
           </button>
         </div>
       ) : (
         <div className="mb-5">
+          <p className="text-xs text-muted-light dark:text-muted-dark mb-1">{greeting}</p>
           <h1 className="font-display text-3xl tracking-wide mb-2">Welcome</h1>
           <form onSubmit={handleSaveName} className="flex gap-2">
             <input
@@ -121,7 +121,7 @@ export default function AppHome() {
       <Link
         to="/camp"
         className="relative overflow-hidden rounded-2xl p-4 mb-4 flex items-center justify-between bg-cover bg-center transition-transform duration-200 active:scale-[0.98]"
-        style={{ backgroundImage: "linear-gradient(120deg, rgba(10,5,0,0.6), rgba(10,5,0,0.85)), url('/mount-up-banner.jpeg')" }}
+        style={{ backgroundImage: "linear-gradient(120deg, rgba(10,5,0,0.6), rgba(10,5,0,0.85)), url('/mount-up-banner.jpg')" }}
       >
         <div>
           <p className="text-[10px] font-bold uppercase tracking-wide text-accent mb-1">Daniel's Camp · Mount Up</p>
@@ -131,6 +131,8 @@ export default function AppHome() {
           <Tent size={16} className="text-accent" />
         </div>
       </Link>
+
+      <NotificationOptIn />
 
       {nextEvent && (
         <Link to="/events" className="rounded-2xl border border-black/10 dark:border-white/10 bg-surface-light dark:bg-surface-dark p-4 mb-4 flex items-center justify-between transition-all duration-200 active:scale-[0.98]">
