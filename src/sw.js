@@ -1,5 +1,11 @@
 import { precacheAndRoute } from 'workbox-precaching';
 
+// Take control immediately instead of waiting for every old instance to fully close.
+self.skipWaiting();
+self.addEventListener('activate', (event) => {
+  event.waitUntil(clients.claim());
+});
+
 precacheAndRoute(self.__WB_MANIFEST);
 
 self.addEventListener('push', (event) => {

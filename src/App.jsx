@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import PublicLayout from './components/PublicLayout';
 import AdminLayout from './components/AdminLayout';
 import RequireStaff from './components/RequireStaff';
+import { useServiceWorkerUpdate } from './hooks/useServiceWorkerUpdate';
 import Home from './pages/Home';
 import Give from './pages/Give';
 import Events from './pages/Events';
@@ -27,6 +28,7 @@ import StaffVisitInfo from './pages/StaffVisitInfo';
 import StaffNotifications from './pages/StaffNotifications';
 
 export default function App() {
+  useServiceWorkerUpdate();
   return (
     <Routes>
       <Route element={<PublicLayout />}>
