@@ -10,7 +10,6 @@ import Confess from './pages/Confess';
 import More from './pages/More';
 import Contact from './pages/Contact';
 import Signup from './pages/Signup';
-import DanielsCamp from './pages/DanielsCamp';
 import Gallery from './pages/Gallery';
 import VisitUs from './pages/VisitUs';
 import StaffLogin from './pages/StaffLogin';
@@ -21,8 +20,6 @@ import StaffConfessions from './pages/StaffConfessions';
 import StaffRoles from './pages/StaffRoles';
 import StaffServiceTimes from './pages/StaffServiceTimes';
 import StaffCoordinators from './pages/StaffCoordinators';
-import StaffCamp from './pages/StaffCamp';
-import StaffCampCheckIn from './pages/StaffCampCheckIn';
 import StaffGallery from './pages/StaffGallery';
 import StaffVisitInfo from './pages/StaffVisitInfo';
 import StaffNotifications from './pages/StaffNotifications';
@@ -39,7 +36,6 @@ export default function App() {
         <Route path="/more" element={<More />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/camp" element={<DanielsCamp />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/visit" element={<VisitUs />} />
       </Route>
@@ -60,8 +56,6 @@ export default function App() {
         <Route path="/staff/roles" element={<StaffRoles />} />
         <Route path="/staff/service-times" element={<StaffServiceTimes />} />
         <Route path="/staff/coordinators" element={<StaffCoordinators />} />
-        <Route path="/staff/camp" element={<StaffCamp />} />
-        <Route path="/staff/camp/check-in" element={<StaffCampCheckIn />} />
         <Route path="/staff/gallery" element={<StaffGallery />} />
         <Route path="/staff/visit-info" element={<StaffVisitInfo />} />
         <Route path="/staff/notifications" element={<StaffNotifications />} />
