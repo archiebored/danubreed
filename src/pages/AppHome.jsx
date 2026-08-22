@@ -1,24 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UserPlus, Phone, MapPin, Tent, ArrowRight, Image as ImageIcon, PartyPopper } from 'lucide-react';
+import { UserPlus, Phone, MapPin, ArrowRight, Image as ImageIcon, PartyPopper } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useLocalName } from '../hooks/useLocalName';
 import NotificationOptIn from '../components/NotificationOptIn';
-
-function useCountdown(targetDate) {
-  const [timeLeft, setTimeLeft] = useState({});
-  useEffect(() => {
-    function calc() {
-      const diff = new Date(targetDate) - new Date();
-      if (diff <= 0) return setTimeLeft({ days: 0 });
-      setTimeLeft({ days: Math.floor(diff / (1000 * 60 * 60 * 24)) });
-    }
-    calc();
-    const t = setInterval(calc, 1000 * 60);
-    return () => clearInterval(t);
-  }, [targetDate]);
-  return timeLeft;
-}
 
 const quickActions = [
   { to: '/signup', label: 'Sign up', icon: UserPlus },
@@ -35,7 +20,6 @@ function isTodayBirthday(dob) {
 }
 
 export default function AppHome() {
-  const countdown = useCountdown('2026-08-27T00:00:00');
   const { name, setName } = useLocalName();
   const [nameInput, setNameInput] = useState('');
   const [birthday, setBirthday] = useState(false);
@@ -117,20 +101,6 @@ export default function AppHome() {
           </form>
         </div>
       )}
-
-      <Link
-        to="/camp"
-        className="relative overflow-hidden rounded-2xl p-4 mb-4 flex items-center justify-between bg-cover bg-center transition-transform duration-200 active:scale-[0.98]"
-        style={{ backgroundImage: "linear-gradient(120deg, rgba(10,5,0,0.6), rgba(10,5,0,0.85)), url('/mount-up-banner.jpg')" }}
-      >
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-wide text-accent mb-1">Daniel's Camp · Mount Up</p>
-          <p className="font-display text-2xl text-white tracking-wide">{countdown.days ?? '—'} days to go</p>
-        </div>
-        <div className="w-9 h-9 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-          <Tent size={16} className="text-accent" />
-        </div>
-      </Link>
 
       <NotificationOptIn />
 
