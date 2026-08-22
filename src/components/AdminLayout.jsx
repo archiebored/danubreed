@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, Calendar, Mail, Clock, Phone, Lock, LogOut, Tent, UserCheck, Menu, X, Image as ImageIcon, MapPin, Bell } from 'lucide-react';
+import { LayoutDashboard, Users, Calendar, Mail, Clock, Phone, Lock, LogOut, Menu, X, Image as ImageIcon, MapPin, Bell } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, to: '/staff/dashboard' },
   { label: 'Members', icon: Users, to: '/staff/members' },
   { label: 'Events', icon: Calendar, to: '/staff/events' },
-  { label: "Daniel's Camp", icon: Tent, to: '/staff/camp' },
-  { label: 'Camp check-in', icon: UserCheck, to: '/staff/camp/check-in' },
   { label: 'Confessions', icon: Mail, to: '/staff/confessions' },
   { label: 'Service times', icon: Clock, to: '/staff/service-times' },
   { label: 'Coordinators', icon: Phone, to: '/staff/coordinators' },
