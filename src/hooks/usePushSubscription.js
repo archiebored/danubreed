@@ -35,23 +35,37 @@ export function usePushSubscription() {
       return;
     }
     setStatus('subscribing');
-    const permission = await Notification.requestPermission();
-    if (permission !== 'granted') {
-      setStatus('denied');
-      return;
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        setStatus('denied');
+        return;
+      }
+      const reg = await navigator.serviceWorker.ready;
+
+      // A device that previously subscribed under a different VAPID key (e.g.
+      // from an earlier build) will throw when subscribing again unless the
+      // stale subscription is cleared first.
+      const existing = await reg.pushManager.getSubscription();
+      if (existing) {
+        await existing.unsubscribe();
+      }
+
+      const sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+      });
+      const json = sub.toJSON();
+      const { error } = await supabase.from('push_subscriptions').insert({
+        endpoint: json.endpoint,
+        p256dh: json.keys.p256dh,
+        auth: json.keys.auth,
+      });
+      setStatus(error ? 'error' : 'subscribed');
+    } catch (err) {
+      console.error('Push subscribe failed:', err);
+      setStatus('error');
     }
-    const reg = await navigator.serviceWorker.ready;
-    const sub = await reg.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
-    });
-    const json = sub.toJSON();
-    const { error } = await supabase.from('push_subscriptions').insert({
-      endpoint: json.endpoint,
-      p256dh: json.keys.p256dh,
-      auth: json.keys.auth,
-    });
-    setStatus(error ? 'error' : 'subscribed');
   }, []);
 
   return { status, subscribe };
