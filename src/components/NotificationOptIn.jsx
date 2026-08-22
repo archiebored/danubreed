@@ -15,7 +15,11 @@ export default function NotificationOptIn() {
         <div>
           <p className="text-sm font-semibold">Turn on notifications</p>
           <p className="text-xs text-muted-light dark:text-muted-dark">
-            {status === 'denied' ? 'Blocked — enable in your phone settings' : "Camp updates and reminders, straight to your phone"}
+            {status === 'denied'
+              ? 'Blocked — enable in your phone settings'
+              : status === 'error'
+              ? "Couldn't turn this on — tap to try again"
+              : "Camp updates and reminders, straight to your phone"}
           </p>
         </div>
       </div>
@@ -25,7 +29,7 @@ export default function NotificationOptIn() {
           disabled={status === 'subscribing'}
           className="flex-shrink-0 bg-accent text-[#1a0a00] text-xs font-bold px-3.5 py-2 rounded-full transition-transform duration-200 hover:scale-105 active:scale-95 disabled:opacity-60"
         >
-          {status === 'subscribing' ? '...' : 'Enable'}
+          {status === 'subscribing' ? '...' : status === 'error' ? 'Retry' : 'Enable'}
         </button>
       )}
     </div>
