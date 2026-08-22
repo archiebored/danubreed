@@ -10,6 +10,15 @@ function urlBase64ToUint8Array(base64String) {
   return Uint8Array.from([...rawData].map((c) => c.charCodeAt(0)));
 }
 
+function withTimeout(promise, ms, label) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error(`Timed out waiting for: ${label}`)), ms)
+    ),
+  ]);
+}
+
 export function usePushSubscription() {
   const [status, setStatus] = useState('idle'); // idle | subscribing | subscribed | denied | unsupported | error
 
@@ -36,12 +45,21 @@ export function usePushSubscription() {
     }
     setStatus('subscribing');
     try {
-      const permission = await Notification.requestPermission();
+      const permission = await withTimeout(
+        Notification.requestPermission(),
+        15000,
+        'permission prompt'
+      );
       if (permission !== 'granted') {
         setStatus('denied');
         return;
       }
-      const reg = await navigator.serviceWorker.ready;
+
+      const reg = await withTimeout(
+        navigator.serviceWorker.ready,
+        10000,
+        'service worker activation'
+      );
 
       // A device that previously subscribed under a different VAPID key (e.g.
       // from an earlier build) will throw when subscribing again unless the
@@ -51,10 +69,14 @@ export function usePushSubscription() {
         await existing.unsubscribe();
       }
 
-      const sub = await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
-      });
+      const sub = await withTimeout(
+        reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+        }),
+        10000,
+        'push subscription'
+      );
       const json = sub.toJSON();
       const { error } = await supabase.from('push_subscriptions').insert({
         endpoint: json.endpoint,
