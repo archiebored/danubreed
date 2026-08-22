@@ -7,34 +7,44 @@ export default function StaffNotifications() {
   const [body, setBody] = useState('');
   const [status, setStatus] = useState('idle');
   const [sentCount, setSentCount] = useState(null);
+  const [errorMsg, setErrorMsg] = useState('');
 
   async function handleSend(e) {
     e.preventDefault();
     if (!title.trim() || !body.trim()) return;
     setStatus('sending');
+    setErrorMsg('');
 
-    const { data: session } = await supabase.auth.getSession();
-    const res = await fetch(
-      `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-notification`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session.session?.access_token}`,
-        },
-        body: JSON.stringify({ title: title.trim(), body: body.trim() }),
+    try {
+      const { data: session } = await supabase.auth.getSession();
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-notification`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session.session?.access_token}`,
+          },
+          body: JSON.stringify({ title: title.trim(), body: body.trim() }),
+        }
+      );
+
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => null);
+        setErrorMsg(errBody?.error || `Server responded with ${res.status}`);
+        setStatus('error');
+        return;
       }
-    );
-
-    if (!res.ok) {
+      const result = await res.json();
+      setSentCount(result.sent ?? 0);
+      setStatus('sent');
+      setTitle('');
+      setBody('');
+    } catch (err) {
+      console.error('Send notification failed:', err);
+      setErrorMsg(err.message || 'Network error');
       setStatus('error');
-      return;
     }
-    const result = await res.json();
-    setSentCount(result.sent ?? 0);
-    setStatus('sent');
-    setTitle('');
-    setBody('');
   }
 
   return (
@@ -78,9 +88,9 @@ export default function StaffNotifications() {
           <p className="text-xs text-green-400">Sent to {sentCount} device{sentCount === 1 ? '' : 's'}.</p>
         )}
         {status === 'error' && (
-          <p className="text-xs text-red-400">Something went wrong sending that — check the function is deployed.</p>
+          <p className="text-xs text-red-400">Couldn't send: {errorMsg}</p>
         )}
       </form>
     </div>
   );
-} 
+}
