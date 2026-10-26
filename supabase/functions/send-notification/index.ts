@@ -38,7 +38,8 @@ async function sendWebPush(title: string, body: string, url?: string) {
         sent++;
       } catch (err) {
         // Stale subscription (device unsubscribed / uninstalled) — clean it up
-        if (err.statusCode === 410 || err.statusCode === 404) {
+        const statusCode = (err as { statusCode?: number } | null)?.statusCode;
+        if (statusCode === 410 || statusCode === 404) {
           await fetch(`${SUPABASE_URL}/rest/v1/push_subscriptions?id=eq.${s.id}`, {
             method: "DELETE",
             headers: restHeaders,
