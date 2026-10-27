@@ -10,26 +10,6 @@ const quickActions = [
   { to: '/contact', label: 'Coordinators', icon: Phone },
 ];
 
-function useCountdown(targetDate) {
-  const [timeLeft, setTimeLeft] = useState({});
-  useEffect(() => {
-    function calc() {
-      const diff = new Date(targetDate) - new Date();
-      if (diff <= 0) return setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      setTimeLeft({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / (1000 * 60)) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
-      });
-    }
-    calc();
-    const t = setInterval(calc, 1000);
-    return () => clearInterval(t);
-  }, [targetDate]);
-  return timeLeft;
-}
-
 function HeroMain() {
   return (
     <div className="relative max-w-3xl mx-auto w-full">
@@ -56,51 +36,12 @@ function HeroMain() {
   );
 }
 
-function HeroCamp() {
-  const countdown = useCountdown('2026-08-27T00:00:00');
-  return (
-    <div className="relative max-w-3xl mx-auto w-full text-white">
-      <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[2px] text-accent mb-4">
-        <span className="w-5 h-px bg-accent" />
-        Annual camp · August 27–30, 2026
-      </p>
-      <h1 className="font-display leading-[0.92] tracking-wide text-[clamp(40px,10vw,90px)] mb-2">
-        DANIEL'S <span className="text-accent">CAMP</span>
-      </h1>
-      <p className="font-display text-[clamp(20px,5vw,40px)] tracking-wide text-white/80 mb-2">
-        MOUNT UP
-      </p>
-      <p className="text-xs sm:text-sm italic text-white/60 max-w-md mb-6">
-        "They shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint." — Isaiah 40:31
-      </p>
-      <div className="flex gap-4 mb-7">
-        {['days', 'hours', 'minutes', 'seconds'].map((unit) => (
-          <div key={unit} className="text-center">
-            <div className="font-display text-2xl sm:text-4xl tracking-wide text-accent leading-none">
-              {String(countdown[unit] ?? 0).padStart(2, '0')}
-            </div>
-            <div className="text-[10px] uppercase tracking-wider text-white/50 mt-1">
-              {unit}
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="flex flex-wrap gap-3">
-        <Link to="/camp" className="px-6 py-3 rounded-full bg-accent text-[#1a0a00] text-sm font-bold transition-all duration-200 hover:scale-[1.05] hover:shadow-lg hover:shadow-accent/30 active:scale-95">
-          Register for camp
-        </Link>
-      </div>
-    </div>
-  );
-}
-
 const slides = [
   {
     id: 'main',
     component: HeroMain,
     bg: 'bg-[linear-gradient(135deg,#FFF8F2_0%,#FFCB94_55%,#FF9A4D_100%)] dark:bg-[linear-gradient(135deg,#19140F_0%,#1a0800_60%,#2d0d00_100%)]',
   },
-  { id: 'camp', component: HeroCamp, bg: null },
 ];
 
 export default function MarketingHome() {
@@ -112,6 +53,7 @@ export default function MarketingHome() {
   const prev = () => setCurrent((c) => (c - 1 + slides.length) % slides.length);
 
   useEffect(() => {
+    if (slides.length < 2) return;
     const t = setInterval(next, 6000);
     return () => clearInterval(t);
   }, [next]);
@@ -123,45 +65,35 @@ export default function MarketingHome() {
 
   const activeSlide = slides[current];
   const Slide = activeSlide.component;
-  const isCampSlide = activeSlide.id === 'camp';
 
   return (
     <div>
       <section
         className={`relative -mx-4 sm:-mx-8 -mt-[104px] pt-[104px] min-h-[70vh] flex items-center overflow-hidden px-4 sm:px-8 pb-16 text-ink-light dark:text-white ${activeSlide.bg || ''}`}
-        style={
-          isCampSlide
-            ? {
-                backgroundImage: "linear-gradient(135deg, rgba(10,5,0,0.55), rgba(10,5,0,0.88)), url('/mount-up-banner.jpeg')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }
-            : undefined
-        }
       >
-        {!isCampSlide && (
-          <>
-            <div className="absolute inset-0 opacity-40 dark:opacity-0" style={{ backgroundImage: 'linear-gradient(rgba(154,52,0,0.18) 1px, transparent 1px), linear-gradient(90deg, rgba(154,52,0,0.18) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
-            <div className="absolute inset-0 opacity-0 dark:opacity-50" style={{ backgroundImage: 'linear-gradient(rgba(249,115,22,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.12) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
-            <div className="absolute -top-24 -right-24 w-[420px] h-[420px] rounded-full opacity-90 dark:opacity-100" style={{ background: 'radial-gradient(circle, rgba(255,140,40,0.4) 0%, transparent 70%)' }} />
-          </>
-        )}
+        <div className="absolute inset-0 opacity-40 dark:opacity-0" style={{ backgroundImage: 'linear-gradient(rgba(154,52,0,0.18) 1px, transparent 1px), linear-gradient(90deg, rgba(154,52,0,0.18) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
+        <div className="absolute inset-0 opacity-0 dark:opacity-50" style={{ backgroundImage: 'linear-gradient(rgba(249,115,22,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.12) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
+        <div className="absolute -top-24 -right-24 w-[420px] h-[420px] rounded-full opacity-90 dark:opacity-100" style={{ background: 'radial-gradient(circle, rgba(255,140,40,0.4) 0%, transparent 70%)' }} />
 
         <div className="relative w-full transition-opacity duration-500">
           <Slide />
         </div>
 
-        <button onClick={prev} aria-label="Previous slide" className="absolute left-3 bottom-5 w-8 h-8 rounded-full bg-black/20 dark:bg-white/10 flex items-center justify-center backdrop-blur-sm text-white transition-transform duration-200 hover:scale-110 active:scale-90">
-          <ChevronLeft size={16} />
-        </button>
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-1.5">
-          {slides.map((_, i) => (
-            <button key={i} onClick={() => setCurrent(i)} aria-label={`Go to slide ${i + 1}`} className={`h-1.5 rounded-full transition-all duration-300 ${i === current ? 'w-6 bg-accent' : 'w-1.5 bg-white/30 hover:bg-white/50'}`} />
-          ))}
-        </div>
-        <button onClick={next} aria-label="Next slide" className="absolute right-3 bottom-5 w-8 h-8 rounded-full bg-black/20 dark:bg-white/10 flex items-center justify-center backdrop-blur-sm text-white transition-transform duration-200 hover:scale-110 active:scale-90">
-          <ChevronRight size={16} />
-        </button>
+        {slides.length > 1 && (
+          <>
+          <button onClick={prev} aria-label="Previous slide" className="absolute left-3 bottom-5 w-8 h-8 rounded-full bg-black/20 dark:bg-white/10 flex items-center justify-center backdrop-blur-sm text-white transition-transform duration-200 hover:scale-110 active:scale-90">
+            <ChevronLeft size={16} />
+          </button>
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-1.5">
+            {slides.map((_, i) => (
+              <button key={i} onClick={() => setCurrent(i)} aria-label={`Go to slide ${i + 1}`} className={`h-1.5 rounded-full transition-all duration-300 ${i === current ? 'w-6 bg-accent' : 'w-1.5 bg-white/30 hover:bg-white/50'}`} />
+            ))}
+          </div>
+          <button onClick={next} aria-label="Next slide" className="absolute right-3 bottom-5 w-8 h-8 rounded-full bg-black/20 dark:bg-white/10 flex items-center justify-center backdrop-blur-sm text-white transition-transform duration-200 hover:scale-110 active:scale-90">
+            <ChevronRight size={16} />
+          </button>
+          </>
+        )}
       </section>
 
       <section className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-14 bg-surface-light dark:bg-surface-dark">
