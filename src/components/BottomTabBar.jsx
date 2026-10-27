@@ -11,7 +11,7 @@ const tabs = [
 
 export default function BottomTabBar() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-base-light/95 dark:bg-[#0e0e0e]/95 backdrop-blur-xl border-t border-black/10 dark:border-white/10 pb-[env(safe-area-inset-bottom)]">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-base-light/95 dark:bg-surface-dark/95 backdrop-blur-xl border-t border-black/10 dark:border-white/10 pb-[env(safe-area-inset-bottom)]">
       <div className="flex justify-around items-center h-[62px]">
         {tabs.map(({ to, label, icon: Icon }) => (
           <NavLink

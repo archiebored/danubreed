@@ -5,7 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 export default function AppTopBar() {
   const { theme, toggleTheme } = useTheme();
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-base-light/95 dark:bg-[#0e0e0e]/95 backdrop-blur-xl border-b border-black/10 dark:border-white/10 pt-[env(safe-area-inset-top)]">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-base-light/95 dark:bg-surface-dark/95 backdrop-blur-xl border-b border-black/10 dark:border-white/10 pt-[env(safe-area-inset-top)]">
       <div className="flex items-center justify-between px-4 h-14">
         <Link to="/" className="font-display text-lg tracking-wide text-accent">Da Nu Breed</Link>
         <button

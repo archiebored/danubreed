@@ -98,7 +98,7 @@ const slides = [
   {
     id: 'main',
     component: HeroMain,
-    bg: 'bg-[linear-gradient(135deg,#FFF8F2_0%,#FFCB94_55%,#FF9A4D_100%)] dark:bg-[linear-gradient(135deg,#0A0A0A_0%,#1a0800_60%,#2d0d00_100%)]',
+    bg: 'bg-[linear-gradient(135deg,#FFF8F2_0%,#FFCB94_55%,#FF9A4D_100%)] dark:bg-[linear-gradient(135deg,#19140F_0%,#1a0800_60%,#2d0d00_100%)]',
   },
   { id: 'camp', component: HeroCamp, bg: null },
 ];

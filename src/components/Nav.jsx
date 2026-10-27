@@ -20,7 +20,7 @@ export default function Nav() {
 
   return (
     <>
-      <nav className="fixed top-3.5 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-28px)] max-w-[400px] lg:max-w-[900px] flex items-center justify-between gap-2 rounded-full border border-black/10 dark:border-white/10 bg-base-light/85 dark:bg-[#0e0e0e]/85 backdrop-blur-xl px-4 lg:px-5 py-2 shadow-lg shadow-black/10 dark:shadow-black/30 transition-shadow duration-300">
+      <nav className="fixed top-3.5 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-28px)] max-w-[400px] lg:max-w-[900px] flex items-center justify-between gap-2 rounded-full border border-black/10 dark:border-white/10 bg-base-light/85 dark:bg-surface-dark/85 backdrop-blur-xl px-4 lg:px-5 py-2 shadow-lg shadow-black/10 dark:shadow-black/30 transition-shadow duration-300">
         <Link to="/" className="font-display text-lg tracking-wide text-accent flex-shrink-0 transition-transform duration-200 hover:scale-105 inline-block">Da Nu Breed</Link>
 
         <div className="hidden lg:flex items-center gap-1">

@@ -18,7 +18,7 @@ export default function InstallBanner() {
   }
 
   return (
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[calc(100%-28px)] max-w-sm flex items-center gap-3 rounded-2xl border border-accent/30 bg-base-light dark:bg-[#151515] px-4 py-3 shadow-xl shadow-black/20 animate-[fadeIn_0.3s_ease]">
+    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[calc(100%-28px)] max-w-sm flex items-center gap-3 rounded-2xl border border-accent/30 bg-base-light dark:bg-surface-dark px-4 py-3 shadow-xl shadow-black/20 animate-[fadeIn_0.3s_ease]">
       <div className="w-9 h-9 rounded-full bg-accent/15 flex items-center justify-center flex-shrink-0">
         <Download size={16} className="text-accent" />
       </div>

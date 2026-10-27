@@ -15,8 +15,8 @@ export default defineConfig({
         name: 'Da Nu Breed',
         short_name: 'Da Nu Breed',
         description: 'Teenage Expression of Calvary Bible Church',
-        theme_color: '#0A0A0A',
-        background_color: '#0A0A0A',
+        theme_color: '#19140F',
+        background_color: '#19140F',
         display: 'standalone',
         start_url: '/',
         icons: [
